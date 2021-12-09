@@ -12,8 +12,13 @@ body,
 body {
   margin: 0;
   font-family: "Inter", system-ui, sans-serif;
+	@apply text-light-black dark:text-lighter-gray;
 }
 
 code {
   font-family: monospace;
+}
+
+.page-container {
+	@apply flex flex-1 flex-col items-center justify-center w-full h-full bg-surface-light dark:bg-surface-dark
 }
