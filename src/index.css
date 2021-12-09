@@ -20,5 +20,9 @@ code {
 }
 
 .page-container {
-	@apply flex flex-1 flex-col items-center justify-center w-full h-full bg-surface-light dark:bg-surface-dark
+	@apply flex flex-1 flex-col items-center justify-center w-full h-full bg-surface-light dark:bg-surface-dark;
+}
+
+.page-content {
+	@apply h-full w-full flex flex-col items-center justify-center;
 }

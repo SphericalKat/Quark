@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "solid-app-router": "^0.1.14",
+    "solid-headless": "^0.10.10",
     "solid-js": "^1.2.6"
   }
 }

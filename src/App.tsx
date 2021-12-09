@@ -3,6 +3,7 @@ import { Component, lazy } from "solid-js";
 const Home = lazy(() => import("./pages/Home"))
 const Subscriptions = lazy(() => import("./pages/Subscriptions"))
 
+
 const App: Component = () => {
 
   return (
