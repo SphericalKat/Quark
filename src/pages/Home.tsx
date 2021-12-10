@@ -1,15 +1,13 @@
-import { Link } from "solid-app-router";
 import {
   Dialog,
-  DialogDescription,
   DialogOverlay,
   DialogPanel,
   DialogTitle,
-  Fragment,
   Transition,
   TransitionChild,
 } from "solid-headless";
-import { Component, createEffect, createSignal } from "solid-js";
+import { Component, createSignal } from "solid-js";
+
 import Navbar from "../components/Navbar";
 
 const Home: Component = () => {
@@ -25,7 +23,16 @@ const Home: Component = () => {
           onClose={closeModal}
           isOpen
         >
-          <div class="min-h-screen px-4 flex items-center justify-center text-center">
+          <div
+            class="
+            min-h-screen
+            px-4
+            flex
+            items-center
+            justify-center
+            text-center
+          "
+          >
             <TransitionChild
               enter="ease-out duration-300"
               enterFrom="opacity-0"
@@ -49,12 +56,12 @@ const Home: Component = () => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <DialogPanel class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-card-light dark:bg-card-dark shadow-xl rounded-2xl">
+              <DialogPanel class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-background shadow-xl rounded-2xl">
                 <DialogTitle as="h2" class="text-2xl font-medium leading-6">
                   Add a feed
                 </DialogTitle>
                 <div class="mt-3">
-                  <p class="text-sm text-dark-gray dark:text-light-gray">
+                  <p class="text-sm">
                     You can enter any URL, and Quark will automatically detect
                     the feed for you. This works for{" "}
                     <strong>most news sites and blogs</strong> out there on the
@@ -64,7 +71,14 @@ const Home: Component = () => {
 
                 <div class="mt-4">
                   <input
-                    class="w-full px-4 py-2 text-light-black rounded-md focus:outline-none"
+                    class="
+                      w-full
+                      px-4
+                      py-2
+                      text-text-primary
+                      rounded-md
+                      focus:outline-none
+                    "
                     type="text"
                     placeholder="https://example.com"
                   />
@@ -73,7 +87,25 @@ const Home: Component = () => {
                 <div class="mt-4">
                   <button
                     type="button"
-                    class="inline-flex w-full justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                    class="
+                      inline-flex
+                      w-full
+                      justify-center
+                      px-4
+                      py-2
+                      text-sm
+                      font-medium
+                      text-blue-900
+                      bg-blue-100
+                      border
+                      border-transparent
+                      rounded-md
+                      hover:bg-blue-200
+                      focus:outline-none
+                      focus-visible:ring-2
+                      focus-visible:ring-offset-2
+                      focus-visible:ring-blue-500
+                    "
                     onClick={closeModal}
                   >
                     Submit
@@ -88,10 +120,10 @@ const Home: Component = () => {
       <div class="page-content">
         <h2 class="text-3xl font-bold">Nothing to see here</h2>
         <button
-          class="border border-light-border dark:border-dark-border mt-4 px-4 py-1"
+          class="border border-border mt-4 px-4 py-1"
           onClick={() => setIsOpenAdd(true)}
         >
-          <p class="text-dark-gray dark:text-light-gray">Add a new feed</p>
+          <p class="">Add a new feed</p>
         </button>
       </div>
 

@@ -2,29 +2,49 @@ import { Link, useLocation } from "solid-app-router";
 import { Component } from "solid-js";
 
 const getTextColor = (path: string, currentPath: string) => {
-  return path === currentPath
-    ? "text-light-black dark:text-lighter-gray"
-    : "text-dark-gray dark:text-light-gray";
+  return path === currentPath ? "text-text-primary" : "text-text-inactive";
 };
 
 const Navbar: Component = () => {
   const { pathname } = useLocation();
 
   return (
-    <div class="flex w-full px-4 py-4 border-t bg-nav-light dark:bg-nav-dark border-light-border dark:border-dark-border">
+    <nav
+      class="
+        flex
+        w-full
+        px-3
+        py-[1.1rem]
+        border-t-[0.25px]
+        items-center
+        justify-evenly
+        bg-background
+        border-border
+        flex-shrink
+        font-medium
+        text-center
+        text-base
+      "
+    >
       <Link
         href="/"
-        class={`flex-1 text-center ${getTextColor("/", pathname)}`}
+        class={`
+          flex-grow
+          ${getTextColor("/", pathname)}
+        `}
       >
         <div>Home</div>
       </Link>
       <Link
         href="/subs"
-        class={`flex-1 text-center ${getTextColor("/subs", pathname)}`}
+        class={`
+          flex-grow
+          ${getTextColor("/subs", pathname)}
+        `}
       >
         <div>Subscriptions</div>
       </Link>
-    </div>
+    </nav>
   );
 };
 
