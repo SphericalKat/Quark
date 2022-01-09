@@ -7,6 +7,8 @@ import {
   TransitionChild,
 } from "solid-headless";
 import { Component, createSignal } from "solid-js";
+import Button from "../components/Button";
+import Plus from "../components/icons/Plus";
 
 import Navbar from "../components/Navbar";
 
@@ -119,12 +121,10 @@ const Home: Component = () => {
 
       <div class="page-content">
         <h2 class="text-3xl font-bold">Nothing to see here</h2>
-        <button
-          class="border border-border mt-4 px-4 py-1"
-          onClick={() => setIsOpenAdd(true)}
-        >
+        <Button onClick={() => setIsOpenAdd(true)}>
+          <Plus class="mr-4" />
           <p class="">Add a new feed</p>
-        </button>
+        </Button>
       </div>
 
       <Navbar />
