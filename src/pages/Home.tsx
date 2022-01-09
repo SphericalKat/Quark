@@ -58,7 +58,7 @@ const Home: Component = () => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <DialogPanel class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-background shadow-xl rounded-2xl">
+              <DialogPanel class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-card shadow-xl rounded-2xl">
                 <DialogTitle as="h2" class="text-2xl font-medium leading-6">
                   Add a feed
                 </DialogTitle>
@@ -77,7 +77,7 @@ const Home: Component = () => {
                       w-full
                       px-4
                       py-2
-                      text-text-primary
+                      text-text-input
                       rounded-md
                       focus:outline-none
                     "

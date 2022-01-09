@@ -14,7 +14,8 @@ module.exports = {
         card: "var(--card)",
         inactive: "var(--inactive)",
         border: "var(--border)",
-				button: "var(--button)"
+				button: "var(--button)",
+				"text-input": "var(--text-input)"
       },
     },
   },
