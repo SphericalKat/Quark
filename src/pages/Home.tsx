@@ -1,4 +1,3 @@
-import Parser from "@jarryd999/rss-parser-browser";
 import {
   Dialog,
   DialogOverlay,

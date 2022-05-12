@@ -22,7 +22,6 @@
     "dexie-relationships": "^1.2.11",
     "solid-app-router": "^0.1.14",
     "solid-headless": "^0.10.12",
-    "solid-js": "^1.3.17",
-    "stream-browserify": "^3.0.0"
+    "solid-js": "^1.3.17"
   }
 }
