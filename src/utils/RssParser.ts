@@ -11,6 +11,7 @@ export interface Feed {
 
 export interface RssItem {
   id: string;
+  date?: string;
   feedId?: string;
   title?: string;
   desc?: string;
@@ -57,6 +58,19 @@ const parseRss = (doc: Document, url: string): Feed | undefined => {
       }
       ret.id = id?.textContent ?? "";
 
+      const summary = i.querySelector('description')
+      if (summary) {
+        ret.desc = summary.textContent ?? undefined
+      } else {
+        ret.desc = i.querySelector('summary')?.textContent ?? undefined
+      }
+
+      let date = i.querySelector("pubDate");
+      if (!date) {
+        date = i.querySelector("updated");
+      }
+      ret.date = new Date(date?.textContent!).toISOString();
+
       const title = i.querySelector("title");
       ret.title = title?.textContent ?? undefined;
 
@@ -82,8 +96,11 @@ const parseRss = (doc: Document, url: string): Feed | undefined => {
       let thumb = i.querySelector("content[url]");
       if (!thumb) {
         thumb = i.querySelector("thumbnail[url]");
-        ret.thumbURL =
-          thumb?.textContent ?? thumb?.getAttribute("url") ?? undefined;
+        if (thumb?.textContent !== "") {
+          ret.thumbURL = thumb?.textContent ?? undefined;
+        } else {
+          ret.thumbURL = thumb?.getAttribute("url") ?? undefined;
+        }
       } else {
         ret.thumbURL = thumb.getAttribute("url") ?? undefined;
       }

@@ -6,24 +6,40 @@ import {
   Transition,
   TransitionChild,
 } from "solid-headless";
-import { Component, createSignal } from "solid-js";
+import { Component, createEffect, createSignal } from "solid-js";
 import Button from "../components/Button";
 import ErrorToast from "../components/ErrorToast";
 import Plus from "../components/icons/Plus";
+import TimeAgo from "javascript-time-ago";
+
+import en from "javascript-time-ago/locale/en.json";
 
 import Navbar from "../components/Navbar";
 import { db } from "../utils/db";
-import parseRss from "../utils/RssParser";
+import parseRss, { RssItem } from "../utils/RssParser";
+
+TimeAgo.addDefaultLocale(en);
+const timeAgo = new TimeAgo("en-US");
 
 const Home: Component = () => {
   const [isOpenAdd, setIsOpenAdd] = createSignal(false);
   const [rssUrl, setRssUrl] = createSignal("");
   const [error, setError] = createSignal("");
   const [loading, setLoading] = createSignal(false);
+  const [items, setItems] = createSignal<RssItem[]>([]);
   const closeModal = () => {
-    setIsOpenAdd(false)
+    setIsOpenAdd(false);
     setRssUrl("");
   };
+
+  createEffect(() => {
+    db.items.toArray().then((i) => {
+      i.sort((a, b) => {
+        return new Date(b.date!).valueOf() - new Date(a.date!).valueOf();
+      });
+      setItems(i);
+    });
+  });
 
   return (
     <div class="page-container">
@@ -133,7 +149,7 @@ const Home: Component = () => {
                             headers: { origin },
                           });
                           if (!res.ok) {
-                              throw new Error(res.statusText);
+                            throw new Error(res.statusText);
                           }
 
                           const str = await res.text();
@@ -145,19 +161,22 @@ const Home: Component = () => {
 
                           (window as any).doc = doc;
 
-                        const parsed = parseRss(doc, URL);
-                        if (!parsed) {
-                            throw new Error('failure parsing RSS')
-                        }
+                          const parsed = parseRss(doc, URL);
+                          if (!parsed) {
+                            throw new Error("failure parsing RSS");
+                          }
 
-                        db.transaction('rw', db.feeds, db.items, async () => {
-                            await db.items.bulkPut(parsed.items)
-                            await db.feeds.put(parsed)
-                        })
-                        setError("")
+                          db.transaction("rw", db.feeds, db.items, async () => {
+                            await db.items.bulkPut(parsed.items);
+                            await db.feeds.put(parsed);
+                          });
+                          setItems(items);
+                          setError("");
                         } catch (e: any) {
-                          console.log(e)
-                          setError("Error parsing RSS feed. Ensure that the URL is correct and a RSS feed is available.");
+                          console.log(e);
+                          setError(
+                            "Error parsing RSS feed. Ensure that the URL is correct and a RSS feed is available."
+                          );
                         }
                       };
                       doAsync().then(() => {
@@ -176,11 +195,37 @@ const Home: Component = () => {
       </Transition>
 
       <div class="page-content">
-        <h2 class="text-3xl font-bold">Nothing to see here</h2>
-        <Button onClick={() => setIsOpenAdd(true)}>
-          <Plus class="mr-4" />
-          <p class="">Add a new feed</p>
-        </Button>
+        {items().length !== 0 ? (
+          <div class="flex flex-1 flex-col w-full h-full items-center ">
+            <h1 class="text-4xl py-4">Feed</h1>
+            <div class="overflow-x-auto overflow-y-auto px-8">
+              {items().map((i) => (
+                <a href={i.link}>
+                  <div id={i.id} class="bg-card p-4 rounded-xl mb-4">
+                    <h2 class="text-xl font-semibold">{i.title}</h2>
+                    <p class="text-sm mt-2">{i.desc}</p>
+                    <div class="flex w-full justify-between">
+                      <p class="text-text-secondary text-xs mt-4">{i.author}</p>
+                      {i.date && (
+                        <p class="text-text-secondary text-xs mt-4">
+                          {timeAgo.format(new Date(i.date))}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <>
+            <h2 class="text-3xl font-bold">Nothing to see here</h2>
+            <Button onClick={() => setIsOpenAdd(true)}>
+              <Plus class="mr-4" />
+              <p class="">Add a new feed</p>
+            </Button>
+          </>
+        )}
       </div>
 
       {error() && (

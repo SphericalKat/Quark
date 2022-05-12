@@ -29,7 +29,7 @@ const Navbar: Component = () => {
       <Link
         href="/"
         class={`
-          flex-grow
+          flex-1
           ${getTextColor("/", pathname)}
         `}
       >
@@ -38,7 +38,7 @@ const Navbar: Component = () => {
       <Link
         href="/subs"
         class={`
-          flex-grow
+          flex-1
           ${getTextColor("/subs", pathname)}
         `}
       >

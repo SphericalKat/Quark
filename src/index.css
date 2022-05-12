@@ -38,6 +38,7 @@ body {
   margin: 0;
   font-family: "Inter", system-ui, sans-serif;
   @apply text-text-primary;
+  max-height: 100%;
 }
 
 code {
@@ -45,9 +46,15 @@ code {
 }
 
 .page-container {
-  @apply flex flex-1 flex-col items-center justify-center w-full h-full bg-background;
+  @apply flex flex-col items-center justify-center w-full h-full bg-background;
+  overflow: auto;
+  min-height: 0;
+  max-height: 100%
 }
 
 .page-content {
   @apply h-full w-full flex flex-col items-center justify-center;
+  overflow: auto;
+  min-height: 0;
+  max-height: 100%;
 }
