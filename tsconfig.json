@@ -8,6 +8,11 @@
     "esModuleInterop": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "lib": [
+        "es6",
+        "DOM",
+        "DOM.Iterable"
+    ]
   }
 }

@@ -1,3 +1,4 @@
+import Parser from "@jarryd999/rss-parser-browser";
 import {
   Dialog,
   DialogOverlay,
@@ -8,13 +9,21 @@ import {
 } from "solid-headless";
 import { Component, createSignal } from "solid-js";
 import Button from "../components/Button";
+import ErrorToast from "../components/ErrorToast";
 import Plus from "../components/icons/Plus";
 
 import Navbar from "../components/Navbar";
+import parseRss from "../utils/RssParser";
 
 const Home: Component = () => {
   const [isOpenAdd, setIsOpenAdd] = createSignal(false);
-  const closeModal = () => setIsOpenAdd(false);
+  const [rssUrl, setRssUrl] = createSignal("");
+  const [error, setError] = createSignal("");
+  const [loading, setLoading] = createSignal(false);
+  const closeModal = () => {
+    setIsOpenAdd(false)
+    setRssUrl("");
+  };
 
   return (
     <div class="page-container">
@@ -82,6 +91,8 @@ const Home: Component = () => {
                       focus:outline-none
                     "
                     type="text"
+                    value={rssUrl()}
+                    onChange={(e) => setRssUrl(e.currentTarget.value)}
                     placeholder="https://example.com"
                   />
                 </div>
@@ -89,7 +100,10 @@ const Home: Component = () => {
                 <div class="mt-4">
                   <button
                     type="button"
+                    disabled={loading()}
                     class="
+                      disabled:opacity-75 
+                      disabled:cursor-not-allowed
                       inline-flex
                       w-full
                       justify-center
@@ -108,7 +122,46 @@ const Home: Component = () => {
                       focus-visible:ring-offset-2
                       focus-visible:ring-blue-500
                     "
-                    onClick={closeModal}
+                    onClick={() => {
+                      const doAsync = async () => {
+                        setLoading(true);
+                        const URL = `https://quark-cors-anywhere.herokuapp.com/${rssUrl()}`;
+                        const origin = `${window.location.protocol}//${window.location.host}`;
+
+                        try {
+                          const res = await fetch(URL, {
+                            headers: { origin },
+                          });
+                          if (!res.ok) {
+                              throw new Error(res.statusText);
+                          }
+
+                          const str = await res.text();
+
+                          const doc = new window.DOMParser().parseFromString(
+                            str,
+                            "text/xml"
+                          );
+
+                        //   (window as any).doc = doc;
+
+                        const parsed = parseRss(doc);
+                        if (!parsed) {
+                            throw new Error('failure parsing RSS')
+                        }
+
+                        console.log(parsed)
+
+                        } catch (e: any) {
+                          console.log(e)
+                          setError("Error parsing RSS feed. Ensure that the URL is correct and a RSS feed is available.");
+                        }
+                      };
+                      doAsync().then(() => {
+                        setLoading(false);
+                        closeModal();
+                      });
+                    }}
                   >
                     Submit
                   </button>
@@ -126,6 +179,15 @@ const Home: Component = () => {
           <p class="">Add a new feed</p>
         </Button>
       </div>
+
+      {error() && (
+        <ErrorToast
+          body={error()}
+          onDismiss={() => {
+            setError("");
+          }}
+        />
+      )}
 
       <Navbar />
     </div>
