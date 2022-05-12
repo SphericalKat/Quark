@@ -1,6 +1,7 @@
 import { Feed } from "solid-headless";
 
-interface Feed {
+export interface Feed {
+  url?: string;
   title?: string;
   desc?: string;
   link?: string;
@@ -8,7 +9,9 @@ interface Feed {
   items: RssItem[];
 }
 
-interface RssItem {
+export interface RssItem {
+  id: string;
+  feedId?: string;
   title?: string;
   desc?: string;
   link?: string;
@@ -18,26 +21,25 @@ interface RssItem {
   categories: string[];
 }
 
-const parseRss = (doc: Document): Feed | undefined => {
-  const feed: Feed = { items: [] };
+const parseRss = (doc: Document, url: string): Feed | undefined => {
+  const feed: Feed = { items: [], url };
   const titleElem = doc.querySelector("title");
   feed.title = titleElem?.textContent ?? undefined;
 
-  let desc = doc.querySelector('description')
+  let desc = doc.querySelector("description");
   if (!desc) {
-    desc = doc.querySelector('subtitle')
+    desc = doc.querySelector("subtitle");
   }
-  feed.desc = desc?.textContent ?? undefined
+  feed.desc = desc?.textContent ?? undefined;
 
-  let image = doc.querySelector('image')
+  let image = doc.querySelector("image");
   if (image) {
-    feed.imageURL = image.querySelector('url')?.textContent ?? undefined
+    feed.imageURL = image.querySelector("url")?.textContent ?? undefined;
   } else {
-    feed.imageURL = doc.querySelector('logo')?.textContent ?? undefined
+    feed.imageURL = doc.querySelector("logo")?.textContent ?? undefined;
   }
 
   let items: NodeListOf<Element> = doc.querySelectorAll("item");
-  console.log(items)
   if (items.length === 0) {
     items = doc.querySelectorAll("entry");
     if (items.length === 0) {
@@ -45,45 +47,56 @@ const parseRss = (doc: Document): Feed | undefined => {
     }
   }
 
-  const feedItems: RssItem[] = Array.from(items).map((i) => {
-    let ret: RssItem = {categories: []};
+  const feedItems: RssItem[] = Array.from(items)
+    .map((i) => {
+      let ret: RssItem = { categories: [], id: "", feedId: url };
 
-    const title = i.querySelector("title");
-    ret.title = title?.textContent ?? undefined;
+      let id = i.querySelector("guid");
+      if (!id) {
+        id = i.querySelector("id");
+      }
+      ret.id = id?.textContent ?? "";
 
-    const link = i.querySelector("link");
-    ret.link = link?.getAttribute("href") ?? link?.textContent ?? undefined;
+      const title = i.querySelector("title");
+      ret.title = title?.textContent ?? undefined;
 
-    let desc = i.querySelector('description');
-    ret.desc = desc?.textContent ?? undefined
+      const link = i.querySelector("link");
+      ret.link = link?.getAttribute("href") ?? link?.textContent ?? undefined;
 
-    const categories = i.querySelectorAll('category')
-    ret.categories = Array.from(categories).map(c => c?.getAttribute('label') ?? c?.textContent ?? "").filter(c => c !== "")
+      let desc = i.querySelector("description");
+      ret.desc = desc?.textContent ?? undefined;
 
-    let author = i.querySelector('creator')
-    if (!author) {
-      author = i.querySelector('author')
-      ret.author = author?.querySelector('name')?.textContent ?? undefined
-    } else {
-      ret.author = author.textContent ?? undefined
-    }
+      const categories = i.querySelectorAll("category");
+      ret.categories = Array.from(categories)
+        .map((c) => c?.getAttribute("label") ?? c?.textContent ?? "")
+        .filter((c) => c !== "");
 
-    let thumb = i.querySelector('content[url]')
-    if (!thumb) {
-      thumb = i.querySelector('thumbnail[url]')
-      ret.thumbURL = thumb?.textContent ?? thumb?.getAttribute('url') ?? undefined
-    } else {
-      ret.thumbURL = thumb.getAttribute('url') ?? undefined
-    }
+      let author = i.querySelector("creator");
+      if (!author) {
+        author = i.querySelector("author");
+        ret.author = author?.querySelector("name")?.textContent ?? undefined;
+      } else {
+        ret.author = author.textContent ?? undefined;
+      }
 
-    let content = i.querySelector('encoded')
-    if (!content) {
-      content = i.querySelector('content')
-    }
-    ret.content = content?.textContent ?? undefined
+      let thumb = i.querySelector("content[url]");
+      if (!thumb) {
+        thumb = i.querySelector("thumbnail[url]");
+        ret.thumbURL =
+          thumb?.textContent ?? thumb?.getAttribute("url") ?? undefined;
+      } else {
+        ret.thumbURL = thumb.getAttribute("url") ?? undefined;
+      }
 
-    return ret;
-  });
+      let content = i.querySelector("encoded");
+      if (!content) {
+        content = i.querySelector("content");
+      }
+      ret.content = content?.textContent ?? undefined;
+
+      return ret;
+    })
+    .filter((i) => i.id !== "");
 
   feed.items = feedItems;
   return feed;

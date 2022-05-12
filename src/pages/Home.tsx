@@ -13,6 +13,7 @@ import ErrorToast from "../components/ErrorToast";
 import Plus from "../components/icons/Plus";
 
 import Navbar from "../components/Navbar";
+import { db } from "../utils/db";
 import parseRss from "../utils/RssParser";
 
 const Home: Component = () => {
@@ -143,15 +144,18 @@ const Home: Component = () => {
                             "text/xml"
                           );
 
-                        //   (window as any).doc = doc;
+                          (window as any).doc = doc;
 
-                        const parsed = parseRss(doc);
+                        const parsed = parseRss(doc, URL);
                         if (!parsed) {
                             throw new Error('failure parsing RSS')
                         }
 
-                        console.log(parsed)
-
+                        db.transaction('rw', db.feeds, db.items, async () => {
+                            await db.items.bulkPut(parsed.items)
+                            await db.feeds.put(parsed)
+                        })
+                        setError("")
                         } catch (e: any) {
                           console.log(e)
                           setError("Error parsing RSS feed. Ensure that the URL is correct and a RSS feed is available.");
