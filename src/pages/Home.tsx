@@ -17,6 +17,7 @@ import en from "javascript-time-ago/locale/en.json";
 import Navbar from "../components/Navbar";
 import { db } from "../utils/db";
 import parseRss, { RssItem } from "../utils/RssParser";
+import sanitizeHtml from "sanitize-html";
 
 TimeAgo.addDefaultLocale(en);
 const timeAgo = new TimeAgo("en-US");
@@ -50,16 +51,7 @@ const Home: Component = () => {
           onClose={closeModal}
           isOpen
         >
-          <div
-            class="
-            min-h-screen
-            px-4
-            flex
-            items-center
-            justify-center
-            text-center
-          "
-          >
+          <div class="min-h-screen px-4 flex items-center justify-center text-center">
             <TransitionChild
               enter="ease-out duration-300"
               enterFrom="opacity-0"
@@ -117,26 +109,7 @@ const Home: Component = () => {
                   <button
                     type="button"
                     disabled={loading()}
-                    class="
-                      disabled:cursor-not-allowed
-                      inline-flex
-                      w-full
-                      justify-center
-                      px-4
-                      py-2
-                      text-sm
-                      font-medium
-                      text-blue-900
-                      bg-blue-100
-                      border
-                      border-transparent
-                      rounded-md
-                      hover:bg-blue-200
-                      focus:outline-none
-                      focus-visible:ring-2
-                      focus-visible:ring-offset-2
-                      focus-visible:ring-blue-500
-                    "
+                    class="disabled:cursor-not-allowed inline-flex w-full justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                     onClick={() => {
                       const doAsync = async () => {
                         setLoading(true);
@@ -225,10 +198,17 @@ const Home: Component = () => {
             <div class="overflow-x-auto overflow-y-auto px-8">
               {items().map((i) => (
                 <a href={i.link}>
-                  <div id={i.id} class="bg-card p-4 rounded-xl mb-4">
-                    <h2 class="text-xl font-semibold">{i.title}</h2>
-                    <p class="text-sm mt-2">{i.desc}</p>
-                    <div class="flex w-full justify-between">
+                  <div
+                    id={i.id}
+                    class="flex flex-col items-stretch bg-card rounded-xl mb-4"
+                  >
+                    {i.thumbURL && (
+                      <img src={i.thumbURL} class="rounded-t-xl" />
+                    )}
+
+                    <h2 class="text-xl font-semibold px-4 pt-4">{i.title}</h2>
+                    {i.desc && <p class="text-sm mt-2 px-4" innerHTML={sanitizeHtml(i.desc)}></p>}
+                    <div class="flex w-full justify-between px-4 pb-4">
                       <p class="text-text-secondary text-xs mt-4">{i.author}</p>
                       {i.date && (
                         <p class="text-text-secondary text-xs mt-4">
