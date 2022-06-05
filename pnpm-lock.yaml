@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@types/sanitize-html': ^2.6.2
   autoprefixer: ^10.4.7
-  dexie: ^3.2.2
+  dexie: ^2.0.0-beta.10
   dexie-relationships: ^1.2.11
   javascript-time-ago: ^2.3.13
   postcss: ^8.4.13
@@ -18,8 +18,8 @@ specifiers:
   vite-plugin-solid: ^2.2.6
 
 dependencies:
-  dexie: 3.2.2
-  dexie-relationships: 1.2.11_dexie@3.2.2
+  dexie: 2.0.4
+  dexie-relationships: 1.2.11_dexie@2.0.4
   javascript-time-ago: 2.3.13
   sanitize-html: 2.7.0
   solid-app-router: 0.1.14_solid-js@1.3.17
@@ -1858,16 +1858,16 @@ packages:
       minimist: 1.2.6
     dev: true
 
-  /dexie-relationships/1.2.11_dexie@3.2.2:
+  /dexie-relationships/1.2.11_dexie@2.0.4:
     resolution: {integrity: sha512-dptIUMiCiEPnSPyZno6yOrmFo+xf0Y1PVC4LX2HO/VgPAYIoaf/wMcC7mbna+RMZ6wRIOEb4T+lgR5v21q2EnA==}
     peerDependencies:
       dexie: ^2.0.0-beta.10
     dependencies:
-      dexie: 3.2.2
+      dexie: 2.0.4
     dev: false
 
-  /dexie/3.2.2:
-    resolution: {integrity: sha512-q5dC3HPmir2DERlX+toCBbHQXW5MsyrFqPFcovkH9N2S/UW/H3H5AWAB6iEOExeraAu+j+zRDG+zg/D7YhH0qg==}
+  /dexie/2.0.4:
+    resolution: {integrity: sha512-aQ/s1U2wHxwBKRrt2Z/mwFNHMQWhESerFsMYzE+5P5OsIe5o1kgpFMWkzKTtkvkyyEni6mWr/T4HUJuY9xIHLA==}
     engines: {node: '>=6.0'}
     dev: false
 
