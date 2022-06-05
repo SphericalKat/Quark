@@ -27,6 +27,9 @@ const parseRss = (doc: Document, url: string): Feed | undefined => {
   const titleElem = doc.querySelector("title");
   feed.title = titleElem?.textContent ?? undefined;
 
+  const link = doc.querySelector('link')
+  feed.link = link?.getAttribute('href') ?? link?.textContent ?? undefined
+
   let desc = doc.querySelector("description");
   if (!desc) {
     desc = doc.querySelector("subtitle");
