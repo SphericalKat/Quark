@@ -90,14 +90,7 @@ const Home: Component = () => {
 
                 <div class="mt-4">
                   <input
-                    class="
-                      w-full
-                      px-4
-                      py-2
-                      text-text-input
-                      rounded-md
-                      focus:outline-none
-                    "
+                    class="w-full px-4 py-2 text-text-input rounded-md focus:outline-none"
                     type="text"
                     value={rssUrl()}
                     onChange={(e) => setRssUrl(e.currentTarget.value)}
@@ -131,18 +124,28 @@ const Home: Component = () => {
                             "text/xml"
                           );
 
-                          (window as any).doc = doc;
+                          // (window as any).doc = doc;
 
                           const parsed = parseRss(doc, URL);
                           if (!parsed) {
                             throw new Error("failure parsing RSS");
                           }
 
-                          db.transaction("rw", db.feeds, db.items, async () => {
+                          await db.transaction("rw", db.feeds, db.items, async () => {
                             await db.items.bulkPut(parsed.items);
                             await db.feeds.put(parsed);
                           });
-                          setItems(parsed.items);
+
+                          const its = await db.items.toArray();
+
+                          its.sort((a, b) => {
+                            return (
+                              new Date(b.date!).valueOf() -
+                              new Date(a.date!).valueOf()
+                            );
+                          });
+                          console.log(setItems(its));
+
                           setError("");
                         } catch (e: any) {
                           console.log(e);
@@ -191,7 +194,15 @@ const Home: Component = () => {
 
       <div class="page-content">
         {items().length !== 0 ? (
-          <div class="flex flex-1 flex-col w-full h-full items-stretch">
+          <div class="flex flex-1 flex-col w-full h-full items-stretch relative">
+            <button
+              onClick={() => setIsOpenAdd(true)}
+              class="self-start absolute bottom-0 left-0 right-0 mx-auto w-40 mb-2 px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 inline-flex justify-center items-center"
+            >
+              <Plus class="mr-4" />
+              <p>Add a feed</p>
+            </button>
+
             <div class="flex w-full justify-center">
               <h1 class="text-4xl py-4">Feed</h1>
             </div>
@@ -207,7 +218,12 @@ const Home: Component = () => {
                     )}
 
                     <h2 class="text-xl font-semibold px-4 pt-4">{i.title}</h2>
-                    {i.desc && <p class="text-sm mt-2 px-4" innerHTML={sanitizeHtml(i.desc)}></p>}
+                    {i.desc && (
+                      <p
+                        class="text-sm mt-2 px-4"
+                        innerHTML={sanitizeHtml(i.desc)}
+                      ></p>
+                    )}
                     <div class="flex w-full justify-between px-4 pb-4">
                       <p class="text-text-secondary text-xs mt-4">{i.author}</p>
                       {i.date && (
