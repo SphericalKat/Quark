@@ -9,7 +9,7 @@ specifiers:
   postcss: ^8.4.13
   sanitize-html: ^2.7.0
   solid-app-router: ^0.1.14
-  solid-headless: ^0.10.12
+  solid-headless: 0.12.2
   solid-js: ^1.3.17
   tailwindcss: ^3.0.24
   typescript: ^4.6.4
@@ -23,7 +23,7 @@ dependencies:
   javascript-time-ago: 2.3.13
   sanitize-html: 2.7.0
   solid-app-router: 0.1.14_solid-js@1.3.17
-  solid-headless: 0.10.12_solid-js@1.3.17
+  solid-headless: 0.12.2_solid-js@1.3.17
   solid-js: 1.3.17
 
 devDependencies:
@@ -2989,14 +2989,14 @@ packages:
       solid-js: 1.3.17
     dev: false
 
-  /solid-headless/0.10.12_solid-js@1.3.17:
-    resolution: {integrity: sha512-O9fUKM0TrAh2SpWnInXCzY8BXHgkShmXxawdBeiWuebPgb60/8ZYL22C/dqyLUAacBDD5xpiZNSz+H3ufOAHPw==}
+  /solid-headless/0.12.2_solid-js@1.3.17:
+    resolution: {integrity: sha512-V327UQOlw6WB9HUeNVG2biZdNVsAYTOt7o+Tb2NXGHYe1q3JpnBsk8ljvLUAbVKs+FdJ65racIa1v8JLbErVbQ==}
     engines: {node: '>=10'}
     peerDependencies:
       solid-js: ^1.2
     dependencies:
       solid-js: 1.3.17
-      solid-use: 0.3.3_solid-js@1.3.17
+      solid-use: 0.5.0_solid-js@1.3.17
     dev: false
 
   /solid-js/1.3.17:
@@ -3013,8 +3013,8 @@ packages:
       solid-js: 1.3.17
     dev: true
 
-  /solid-use/0.3.3_solid-js@1.3.17:
-    resolution: {integrity: sha512-94XOf4ouYrDzLLvRFw5oDEZPIaOKXCkdHFFDsCrFNUKxCtnbWJyiBP2iN90L79U6zvpzzanrjw09IKlShRdZMA==}
+  /solid-use/0.5.0_solid-js@1.3.17:
+    resolution: {integrity: sha512-z1AaS99SL3gNP70K4+XIVKGXDRI56m3Q6Q4X63bfgw0kaN6cwT4SAyFZAmIRjHcvf5rOMRQfNgUV4YVDha+LcQ==}
     engines: {node: '>=10'}
     peerDependencies:
       solid-js: ^1.2
