@@ -26,6 +26,6 @@
     "sanitize-html": "2.7.1",
     "solid-app-router": "0.1.14",
     "solid-headless": "0.12.2",
-    "solid-js": "1.5.3"
+    "solid-js": "1.8.16"
   }
 }
