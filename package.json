@@ -20,7 +20,7 @@
     "vite-plugin-solid": "2.3.0"
   },
   "dependencies": {
-    "dexie": "2.0.4",
+    "dexie": "3.2.2",
     "dexie-relationships": "1.2.11",
     "javascript-time-ago": "2.5.7",
     "sanitize-html": "2.7.1",
